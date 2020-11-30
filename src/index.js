@@ -1,14 +1,48 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider} from 'react-redux';
+import store, { persistor } from '@/redux/persist';
+import { PersistGate} from 'redux-persist/lib/integration/react';
+import {
+    HashRouter as Router,
+    Route,
+    Switch
+} from 'react-router-dom';
+import AuthComponent from './components/AuthComponent/index';
+import AsyncComponent from './components/AsyncComponent/index';
+import zhCN from 'antd/es/locale/zh_CN';
+import { ConfigProvider } from 'antd';
+
 import './style/antdreset.less';
 import './style/index.less';
+const Login = AsyncComponent(() => import('./view/login/index'));
+const App = AsyncComponent(() => import('./App'));
 
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <Provider store={store} >
+            <PersistGate loading={null}
+                persistor={persistor}
+            >
+                <ConfigProvider
+                    locale={zhCN}>
+                    <Router>
+                        <Switch>
+                            <Route component={Login}
+                                exact
+                                path="/login"
+                            ></Route>
+                            <AuthComponent component={App}
+                                path="/"
+                            ></AuthComponent>
+                        </Switch>
+
+                    </Router>
+                </ConfigProvider>
+            </PersistGate>
+        </Provider>
     </React.StrictMode>,
     document.getElementById('root')
 );
