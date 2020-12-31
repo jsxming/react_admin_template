@@ -19,6 +19,8 @@ import './style/index.less';
 const Login = AsyncComponent(() => import('./view/login/index'));
 const App = AsyncComponent(() => import('./App'));
 
+const Topics = AsyncComponent(() => import('./view/test/a'));
+
 
 ReactDOM.render(
     <React.StrictMode>
@@ -30,15 +32,25 @@ ReactDOM.render(
                     locale={zhCN}>
                     <Router>
                         <Switch>
-                            <Route component={Login}
-                                exact
-                                path="/login"
-                            ></Route>
+
                             <AuthComponent component={App}
+                                exact
                                 path="/"
                             ></AuthComponent>
-                        </Switch>
 
+                            <Route component={Login}
+                                path="/login"
+                            ></Route>
+
+                            <Route path="/topics" >
+                                <Topics/>
+                            </Route>
+
+                            <Route path="*" >
+                                <h1>404</h1>
+                            </Route>
+
+                        </Switch>
                     </Router>
                 </ConfigProvider>
             </PersistGate>
